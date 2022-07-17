@@ -46,7 +46,6 @@
                     lastInput = 2;
                     break;
                 case Keys.Right:
-                    game.Right();
                     lastInput = 3;
                     break;
             }
@@ -56,9 +55,9 @@
         {
             g = e.Graphics;
             e.Graphics.FillRectangle(brush, sidebar);
-            DrawSnake(g, e, game.Snake);
             DrawApple(g, e);
-            isEaten = game.CheckCollision(applePart, snakePart, ref score);
+            isEaten = game.CheckCollision(applePart, snakePart, ref score, lastInput);
+            DrawSnake(g, e, game.Snake);
             e.Graphics.DrawString($"SCORE:{score}", new Font("Times New Roman", 25.0f), white, new PointF(20f, 20f));
         }
 
@@ -85,15 +84,19 @@
 
         private void DrawSnake(Graphics g, PaintEventArgs e, List<Point> snake)
         {
-            snakePart = new Rectangle(snake[0].X, snake[0].Y, 20, 20);
-            g.FillRectangle(green, snakePart);
+            for (int i = 0; i < snake.Count; i++)
+            {
+                snakePart = new Rectangle(snake[i].X, snake[i].Y, 20, 20);
+                g.FillRectangle(green, snakePart);
+            }
         }
 
         private void DrawApple(Graphics g, PaintEventArgs e)
         {
-            if(isEaten){
-                applePart = new Rectangle(new Random().Next(1, 7)*100, new Random().Next(1, 3)*100, 20, 20);
-            }            
+            if (isEaten)
+            {
+                applePart = new Rectangle(new Random().Next(1, 7) * 100, new Random().Next(1, 3) * 100, 20, 20);
+            }
             g.FillRectangle(red, applePart);
         }
     }
