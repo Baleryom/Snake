@@ -6,6 +6,7 @@
         private Graphics g;
         private SnakeFrm snakeView;
         private SolidBrush brush = new SolidBrush(Color.Black);
+        private SolidBrush white = new SolidBrush(Color.White);
         private SolidBrush green = new SolidBrush(Color.Green);
         private SolidBrush red = new SolidBrush(Color.Red);
         private Rectangle sidebar = new Rectangle(0, 0, 800, 800);
@@ -57,8 +58,8 @@
             e.Graphics.FillRectangle(brush, sidebar);
             DrawSnake(g, e, game.Snake);
             DrawApple(g, e);
-            isEaten = game.CheckCollision(applePart, snakePart);
-            e.Graphics.DrawString($"SCORE:{score}", new Font("Times New Roman", 25.0f), brush, new PointF(350f, 30f));
+            isEaten = game.CheckCollision(applePart, snakePart, ref score);
+            e.Graphics.DrawString($"SCORE:{score}", new Font("Times New Roman", 25.0f), white, new PointF(20f, 20f));
         }
 
         private void Snake_Form_Tick(object sender, System.EventArgs e)
