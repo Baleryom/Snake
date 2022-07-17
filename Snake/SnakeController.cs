@@ -10,12 +10,12 @@
         private SolidBrush red = new SolidBrush(Color.Red);
         private Rectangle sidebar = new Rectangle(0, 0, 800, 800);
         private int lastInput = 0;
-        private int score=0;
+        private int score = 0;
+        private bool isEaten = true;
         Rectangle snakePart, applePart;
 
         public SnakeController()
         {
-            applePart = new Rectangle(0, 0, 0, 0);
             this.snakeView = new SnakeFrm();
             this.snakeView.KeyDown += new KeyEventHandler(Snake_Form_KeyDown);
             this.snakeView.Paint += new PaintEventHandler(Snake_Form_Draw);
@@ -57,12 +57,13 @@
             e.Graphics.FillRectangle(brush, sidebar);
             DrawSnake(g, e, game.Snake);
             DrawApple(g, e);
+            isEaten = game.CheckCollision(applePart, snakePart);
             e.Graphics.DrawString($"SCORE:{score}", new Font("Times New Roman", 25.0f), brush, new PointF(350f, 30f));
         }
 
         private void Snake_Form_Tick(object sender, System.EventArgs e)
         {
-            snakeView.Invalidate(snakePart);
+            snakeView.Refresh();
             switch (lastInput)
             {
                 case 0:
@@ -78,24 +79,21 @@
                     game.Right();
                     break;
             }
-            snakeView.Invalidate(snakePart);
-            snakeView.Invalidate(applePart);
+            snakeView.Refresh();
         }
 
         private void DrawSnake(Graphics g, PaintEventArgs e, List<Point> snake)
         {
-            snakePart = new Rectangle(snake[0].X, snake[0].Y, 25, 25);
+            snakePart = new Rectangle(snake[0].X, snake[0].Y, 20, 20);
             g.FillRectangle(green, snakePart);
         }
 
         private void DrawApple(Graphics g, PaintEventArgs e)
         {
-            if(game.CheckCollision(applePart, snakePart))
-            {
-                applePart = new Rectangle(new Random().Next(100, 700), new Random().Next(100, 350), 25, 25);
-                g.FillRectangle(red, applePart);
-            }
-            
+            if(isEaten){
+                applePart = new Rectangle(new Random().Next(1, 7)*100, new Random().Next(1, 3)*100, 20, 20);
+            }            
+            g.FillRectangle(red, applePart);
         }
     }
 }

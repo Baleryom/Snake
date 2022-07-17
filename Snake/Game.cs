@@ -1,4 +1,6 @@
-﻿namespace Snake
+﻿using System.Diagnostics;
+
+namespace Snake
 {
     class Game
     {
@@ -17,7 +19,7 @@
         }
         public void Left()
         {
-            Snake[0] = new Point() { X = Snake[0].X - 10, Y = Snake[0].Y  };
+            Snake[0] = new Point() { X = Snake[0].X - 10, Y = Snake[0].Y };
         }
         public void Right()
         {
@@ -26,6 +28,7 @@
 
         public bool CheckCollision(Rectangle apple, Rectangle snake)
         {
+            Debug.Write(snake.X+" : "+ snake.Y+"\n");
             if (apple.X == snake.X && apple.Y == snake.Y)
                 return true;
             else
