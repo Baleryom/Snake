@@ -7,12 +7,15 @@
         private SnakeFrm snakeView;
         private SolidBrush brush = new SolidBrush(Color.Black);
         private SolidBrush green = new SolidBrush(Color.Green);
+        private SolidBrush red = new SolidBrush(Color.Red);
         private Rectangle sidebar = new Rectangle(0, 0, 800, 800);
         private int lastInput = 0;
-        Rectangle snakePart;
+        private int score=0;
+        Rectangle snakePart, applePart;
 
         public SnakeController()
         {
+            applePart = new Rectangle(0, 0, 0, 0);
             this.snakeView = new SnakeFrm();
             this.snakeView.KeyDown += new KeyEventHandler(Snake_Form_KeyDown);
             this.snakeView.Paint += new PaintEventHandler(Snake_Form_Draw);
@@ -23,7 +26,6 @@
         {
             this.game = new Game();
             this.snakeView.ShowDialog();
-
         }
 
         private void Snake_Form_KeyDown(object sender, KeyEventArgs e)
@@ -54,6 +56,8 @@
             g = e.Graphics;
             e.Graphics.FillRectangle(brush, sidebar);
             DrawSnake(g, e, game.Snake);
+            DrawApple(g, e);
+            e.Graphics.DrawString($"SCORE:{score}", new Font("Times New Roman", 25.0f), brush, new PointF(350f, 30f));
         }
 
         private void Snake_Form_Tick(object sender, System.EventArgs e)
@@ -74,15 +78,24 @@
                     game.Right();
                     break;
             }
-
             snakeView.Invalidate(snakePart);
-            snakeView.Refresh();
+            snakeView.Invalidate(applePart);
         }
 
         private void DrawSnake(Graphics g, PaintEventArgs e, List<Point> snake)
         {
             snakePart = new Rectangle(snake[0].X, snake[0].Y, 25, 25);
             g.FillRectangle(green, snakePart);
+        }
+
+        private void DrawApple(Graphics g, PaintEventArgs e)
+        {
+            if(game.CheckCollision(applePart, snakePart))
+            {
+                applePart = new Rectangle(new Random().Next(100, 700), new Random().Next(100, 350), 25, 25);
+                g.FillRectangle(red, applePart);
+            }
+            
         }
     }
 }

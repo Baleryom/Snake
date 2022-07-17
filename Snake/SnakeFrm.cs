@@ -15,7 +15,7 @@ namespace Snake
         public void Initialize()
         {
             this.t.Enabled = true;
-            this.t.Interval = 600;
+            this.t.Interval = 100;
         }
     }
 }
